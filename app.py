@@ -29,6 +29,7 @@ def reset():
     database['David'] = 0
     
     client.publish('reset', -1)
+    return 'lel'
 
 @app.route('/', methods=['GET'])
 def goodbye():
