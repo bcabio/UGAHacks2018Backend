@@ -21,7 +21,7 @@ app = Flask(__name__)
 
 @app.route('/', methods=['GET'])
 def goodbye():
-    client.publish('ugahacks/brian', request.args.get('pokemon'))
+#    client.publish('ugahacks/brian', request.args.get('pokemon'))
     return 'i did it'
 
 @app.route('/', methods=['POST'])
