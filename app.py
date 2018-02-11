@@ -19,6 +19,8 @@ user_drinks = db['users']
 
 app = Flask(__name__)
 
+database = dict()
+
 @app.route('/', methods=['GET'])
 def goodbye():
 #    client.publish('ugahacks/brian', request.args.get('pokemon'))
@@ -29,8 +31,9 @@ def hello():
     print(request.args.get('person'))
     person_name = request.form.get('person')
     doc_cursor = user_drinks.update_one({}, {'$inc': {person_name: 1}})     
+    database[person_name] += 1
     print('ugahacks/' + str(person_name.lower()))
-    client.publish('ugahacks/' + str(person_name.lower()), person_name)
+    client.publish('ugahacks/' + str(person_name.lower()), database[person_name])
     print('here')
     return 'did it'
 
@@ -42,6 +45,11 @@ def on_message(mosq, obj, msg):
     print('lel')
 
 if __name__ == '__main__':
+    database['Brian'] = 0
+    database['Aska'] = 0
+    database['Shubham'] = 0
+    database['David'] = 0
+
     client = paho.Client()
     client.username_pw_set(user, password=password)
     client.on_message = on_message
