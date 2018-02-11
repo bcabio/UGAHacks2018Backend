@@ -1,7 +1,10 @@
+import os
 import paho.mqtt.client as paho
 import paho.mqtt.subscribe as subscribe
 from flask import Flask, request
 from pymongo import MongoClient
+
+web_port = int(os.environ.get('PORT', 5000))
 
 broker_address = "m11.cloudmqtt.com"
 port = 11730
@@ -43,4 +46,4 @@ if __name__ == '__main__':
     client.on_message = on_message
     client.connect(broker_address, port=port)
     client.loop_start()
-    app.run()
+    app.run(port=web_port)
