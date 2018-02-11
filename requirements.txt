@@ -15,8 +15,6 @@ pyOpenSSL==0.13.1
 pyinotify==0.9.4
 pymongo==3.6.0
 pyserial==2.6
-python-apt==0.9.3.12
-python-debian==0.1.27
 requests==2.4.3
 sense-emu==1.0
 sense-hat==2.2.0
