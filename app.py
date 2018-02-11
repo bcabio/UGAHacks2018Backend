@@ -31,6 +31,7 @@ def hello():
     doc_cursor = user_drinks.update_one({}, {'$inc': {person_name: 1}})     
     print('ugahacks/' + str(person_name.lower()))
     client.publish('ugahacks/' + str(person_name.lower()), person_name)
+    print('here')
     return 'did it'
 
 def on_connect(client, userdata, flags, rc):
