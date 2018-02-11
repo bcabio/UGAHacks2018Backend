@@ -21,6 +21,15 @@ app = Flask(__name__)
 
 database = dict()
 
+@app.route('/reset')
+def reset():
+    database['Brian'] = 0
+    database['Aska'] = 0
+    database['Shubham'] = 0
+    database['David'] = 0
+    
+    client.publish('reset', -1)
+
 @app.route('/', methods=['GET'])
 def goodbye():
 #    client.publish('ugahacks/brian', request.args.get('pokemon'))

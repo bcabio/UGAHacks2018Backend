@@ -17,6 +17,12 @@ GPIO.setup(27, GPIO.OUT)
 def on_message(mosq, obj, msg):
     print(msg.topic, msg.qos, msg.payload)
     
+    if int(msg.payload) == -1:
+        GPIO.output(18, GPIO.LOW)
+        GPIO.output(23, GPIO.LOW)
+        GPIO.output(24, GPIO.LOW)
+        GPIO.output(27, GPIO.LOW)
+ 
     if int(msg.payload) >= 1:
         GPIO.output(18, GPIO.HIGH) 
     if int(msg.payload) >= 2:
@@ -37,4 +43,5 @@ if __name__ == '__main__':
     client.connect(broker_address, port=port)
 
     client.subscribe("ugahacks/brian", 0)
+    client.subscribe("reset", 0)
     client.loop_forever()
