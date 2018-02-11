@@ -1,12 +1,45 @@
-from flask import Flask
-from flask_mqtt import Mqtt
+import paho.mqtt.client as paho
+import paho.mqtt.subscribe as subscribe
+from flask import Flask, request
+from pymongo import MongoClient
+
+broker_address = "m11.cloudmqtt.com"
+port = 11730
+user = "ctanobuc"
+password = "t2c73UnIQwOh"
+
+db_url = 'mongodb://admin:admin@ds231658.mlab.com:31658/ugahacks2018-mongo'
+mongo_client = MongoClient(db_url)
+db = mongo_client['ugahacks2018-mongo']
+
+user_drinks = db['users']
 
 app = Flask(__name__)
-app.config['MQTT_BROKER_URL'] = 'm11.cloudmqtt.com'
-app.config['MQTT_BROKER_PORT'] = 11730
-app.config['MQTT_USERNAME'] = 'ctanobuc'
-app.config['MQTT_PASSWORD'] = 't2c73UnIQwOh'
-app.config['MQTT_KEEPALIVE'] = 60
-app.config['MQTT_TLS_ENABLED'] = False
 
-mqtt = Mqtt()
+@app.route('/', methods=['GET'])
+def goodbye():
+    client.publish('ugahacks/brian', request.args.get('pokemon'))
+    return 'i did it'
+
+@app.route('/', methods=['POST'])
+def hello():
+    print(request.args.get('person'))
+    person_name = request.form.get('person')
+    doc_cursor = user_drinks.update_one({}, {'$inc': {person_name: 1}})     
+    client.publish('ugahacks/brian', person_name)
+    return 'did it'
+
+def on_connect(client, userdata, flags, rc):
+    print('Connected with status ' + str(rc))
+
+def on_message(mosq, obj, msg):
+    print(msg.topic, msg.qos, msg.payload)
+    print('lel')
+
+if __name__ == '__main__':
+    client = paho.Client()
+    client.username_pw_set(user, password=password)
+    client.on_message = on_message
+    client.connect(broker_address, port=port)
+    client.loop_start()
+    app.run()
