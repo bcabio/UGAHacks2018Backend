@@ -26,7 +26,8 @@ def hello():
     print(request.args.get('person'))
     person_name = request.form.get('person')
     doc_cursor = user_drinks.update_one({}, {'$inc': {person_name: 1}})     
-    client.publish('ugahacks/brian', person_name)
+    print('ugahacks/' + str(person_name.lower()))
+    client.publish('ugahacks/' + str(person_name.lower()), person_name)
     return 'did it'
 
 def on_connect(client, userdata, flags, rc):
